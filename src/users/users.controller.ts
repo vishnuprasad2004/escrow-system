@@ -2,6 +2,7 @@ import { Controller, Post, Get, Put, Param, Body, Res, HttpStatus } from '@nestj
 import { UserService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
 
+// @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -26,4 +27,15 @@ export class UserController {
   async getUser(@Param('name') name: string) {
     return this.userService.findUser(name);
   }
+
+  @Put("/addFunds/:userId")
+  async addFunds(@Param('userId') userId: string, @Body() {amount}) {
+    return this.userService.addFundstoWallet(userId, amount);
+  }
+
+  @Get("/balance/:userId")
+  async getBalance(@Param('userId') userId: string) {
+    return this.userService.getBalance(userId);
+  }
+
 }

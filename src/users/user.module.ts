@@ -11,5 +11,6 @@ import { User, UserSchema } from './users.schema';
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),]
 })
 export default class UserModule {}

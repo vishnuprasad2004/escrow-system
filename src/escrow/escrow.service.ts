@@ -90,17 +90,19 @@ export class EscrowService {
       if(!escrow) {
         throw new Error("Invalid Escrow ID");
       }
-      if(escrow.status === "RELEASED" || escrow.status === "REFUNDED") {
+      console.log(escrow);
+      
+      if(escrow.status == "RELEASED" || escrow.status == "REFUNDED") {
         throw new Error("Escrow already processed");
       }
-      if(status === "RELEASED") {
+      if(status == "RELEASED") {
 
         await this.EscrowModel.updateOne({_id: escrowID}, {status: "RELEASED"}).exec();
-        await this.TransactionModel.updateOne({_id: escrow.pendingTransactionsID}, {status: "COMPLETED"}).exec();
+        await this.TransactionModel.findByIdAndUpdate({_id: escrow.pendingTransactionsID}, {status: "COMPLETED"}).exec();
         await this.UserModel.updateOne({_id: escrow.initiatingUserID}, {$inc: {"wallet.moneyAmount": -escrow.totalAmount}}).exec();
         // await this.UserModel.updateOne({_id: escrow.receivingUserID}, {$inc: {"wallet.moneyAmount": escrow.totalAmount}}).exec();
 
-      } else if(status === "REFUNDED") {
+      } else if(status == "REFUNDED") {
 
         await this.EscrowModel.updateOne({_id: escrowID}, {status: "REFUNDED"}).exec();
         // await this.TransactionModel.updateOne({_id: escrow.transactions}, {status: "CANCELLED"}).exec();
