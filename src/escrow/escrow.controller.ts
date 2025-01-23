@@ -1,7 +1,9 @@
-import {Body, Controller, Get, HttpStatus, Post, Put, Res} from "@nestjs/common";
+import {Body, Controller, Get, HttpStatus, Post, Put, Res, UseGuards} from "@nestjs/common";
 import { EscrowService } from "./escrow.service";
 import { CreateEscrowDto, UpdateEscrowDto } from "./escrow.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller('escrow')
 export class EscrowController {
   constructor(private readonly escrowService: EscrowService) {}

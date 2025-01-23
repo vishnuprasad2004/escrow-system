@@ -6,15 +6,21 @@ import { getDatabaseConfig } from './config/db.config';
 import UserModule from './users/user.module';
 import TransactionModule from './transactions/transactions.module';
 import EscrowModule from './escrow/escrow.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRootAsync({
     useFactory: getDatabaseConfig
     }), 
     UserModule, 
     TransactionModule, 
-    EscrowModule
+    EscrowModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
