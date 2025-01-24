@@ -3,17 +3,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.schema';
 import { CreateUserDto, UpdateUserDto } from './users.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly jwtService: JwtService, ) {}
 
   async findUsers() {
     return await this.userModel.find().populate('wallet.transactions').exec();
   }
   
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = new this.userModel(createUserDto);
+    const payload = { email: createUserDto.email };
+    const token = this.jwtService.sign(payload);
+    const newUser = new this.userModel({...createUserDto,accessToken:token});
     return newUser.save();
   }
 

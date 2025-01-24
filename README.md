@@ -30,3 +30,73 @@ $ npm run start:prod
 ```
 
 Check the Postman Collections: <a href="https://www.postman.com/lunar-module-geoscientist-36395329/workspace/escrow-system/collection/36933233-2805ca9b-4eb2-4935-86ed-3e7dcfee150d?action=share&creator=36933233">Postman Workspace Link</a>
+
+
+## Endpoints
+
+### Login
+#### POST `/v1/api/auth/login`
+**Description**: Logins in the user with a generated token
+**Request Body**:
+
+- `email` (string, required): The email of the user.
+- `password` (string, required): The Password of the user.
+
+
+Returns a token which can be kept in the local storage in frontend
+
+---
+
+### Get all Users
+
+#### GET `/v1/api/users/`
+
+**Description**: Retrieves the information all the users.
+
+---
+
+### Get a User by Name
+
+#### GET `/v1/api/users/:name`
+
+**Description**: Retrieves the information all the users.
+**Parameters**:
+
+- `name` (string, required): The name of the user to be retrieved.
+  
+---
+
+### Add funds to the User's Wallet
+
+#### PUT `/v1/api/users/addFunds/:userId`
+
+**Description**: Adds some given amount to the wallet of the user
+
+**Parameters**:
+
+- `userId` (string, required): The id of the user to be retrieved.
+
+**Request Body**:
+
+- `amount` (number, required): The amount of funds to add.
+
+---
+
+### Get the User's Wallet Balance
+
+#### GET `/v1/api/users/balance/:userId`
+
+**Description**: Gets the amount of money in the wallet of the user
+
+**Parameters**:
+
+- `userId` (string, required): The name of the user to be retrieved.
+
+---
+
+
+
+
+
+
+

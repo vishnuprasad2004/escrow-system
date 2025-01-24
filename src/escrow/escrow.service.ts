@@ -48,16 +48,17 @@ export class EscrowService {
 
       console.log(transaction);
       
-  
+      console.log();
+      
       //updating the users wallet
       await this.UserModel.updateOne(
         { name: initiatingUserName }, 
         {
-          $push: { transactions: transaction._id }, 
+          $push: { "wallet.transactions": transaction._id }, 
           $set: { "wallet.moneyAmount": moneyAmount - totalAmount }
         }
       ).exec();
-      await this.UserModel.updateOne({name: receivingUserName}, {$push: {transactions: transaction._id}}).exec();
+      await this.UserModel.updateOne({name: receivingUserName}, {$push: {"wallet.transactions": transaction._id}}).exec();
       //creating the escrow
       const newEscrow = await this.EscrowModel.create({
         transactions: transaction._id,
@@ -86,7 +87,8 @@ export class EscrowService {
   // To test this function, you can use this : 67923e2bc6b16fb5e7acfabd
   async processEscrowTransaction(escrowID: string, status: string) {
     try {
-      const escrow = await this.EscrowModel.findById(escrowID);
+      const validId = new mongoose.Types.ObjectId(escrowID);
+      const escrow = await this.EscrowModel.findById(validId);
       if(!escrow) {
         throw new Error("Invalid Escrow ID");
       }
